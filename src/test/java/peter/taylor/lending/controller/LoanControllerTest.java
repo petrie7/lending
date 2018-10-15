@@ -32,4 +32,13 @@ public class LoanControllerTest {
         verify(loanService).createLoan(loan);
     }
 
+    @Test
+    public void handlesRequestToRetrieveALoan() {
+        long loanId = 1L;
+
+        loanController.retrieveLoan(loanId);
+
+        verify(loanService).retrieveFor(loanId);
+    }
+
 }

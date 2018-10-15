@@ -8,17 +8,18 @@ import peter.taylor.lending.repositories.LoanRepository;
 @Service
 public class LoanService {
 
-    @Autowired
     private LoanRepository loanRepository;
 
-    public LoanService() {
-    }
-
+    @Autowired
     public LoanService(LoanRepository loanRepository) {
         this.loanRepository = loanRepository;
     }
 
     public void createLoan(Loan loan) {
         loanRepository.save(loan);
+    }
+
+    public Loan retrieveFor(Long id) {
+        return loanRepository.findById(id).get();
     }
 }

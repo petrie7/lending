@@ -2,22 +2,19 @@ package peter.taylor.lending.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import peter.taylor.lending.domain.Loan;
 import peter.taylor.lending.service.LoanService;
+
+import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 public class LoanController {
 
-    @Autowired
     private LoanService loanService;
 
-    public LoanController() {
-    }
-
+    @Autowired
     public LoanController(LoanService loanService) {
         this.loanService = loanService;
     }
@@ -25,5 +22,10 @@ public class LoanController {
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createLoan(@RequestBody Loan loan) {
         loanService.createLoan(loan);
+    }
+
+    @RequestMapping(value = "/retrieve/{id:.+}", method = RequestMethod.GET)
+    public ResponseEntity<Loan> retrieveLoan(@PathVariable Long id) {
+        return new ResponseEntity<>(loanService.retrieveFor(id), OK);
     }
 }

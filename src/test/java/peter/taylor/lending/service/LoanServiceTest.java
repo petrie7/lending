@@ -8,7 +8,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import peter.taylor.lending.domain.Loan;
 import peter.taylor.lending.repositories.LoanRepository;
 
+import static java.util.Optional.of;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoanServiceTest {
@@ -24,11 +26,20 @@ public class LoanServiceTest {
     }
 
     @Test
-    public void createsLoan() {
+    public void createsALoan() {
         Loan loan = new Loan("Borrower", 10.0);
-        loanService.createLoan(loan);
 
-        verify(loanRepository).save(loan);
+        loanService.createLoan(loan);
+    }
+
+    @Test
+    public void retrievesALoan() {
+        long loanId = 1L;
+        when(loanRepository.findById(loanId)).thenReturn(of(new Loan("Borrower", 10.0)));
+
+        loanService.retrieveFor(loanId);
+
+        verify(loanRepository).findById(loanId);
     }
 
 }
