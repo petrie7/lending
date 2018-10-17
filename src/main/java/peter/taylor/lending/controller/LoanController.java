@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import peter.taylor.lending.domain.InvestedLoan;
+import peter.taylor.lending.domain.Investment;
 import peter.taylor.lending.domain.Loan;
 import peter.taylor.lending.service.LoanService;
 
@@ -20,12 +22,17 @@ public class LoanController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createLoan(@RequestBody Loan loan) {
-        loanService.createLoan(loan);
+    public ResponseEntity<Long> createLoan(@RequestBody Loan loan) {
+        return new ResponseEntity<>(loanService.createLoan(loan), OK);
     }
 
-    @RequestMapping(value = "/retrieve/{id:.+}", method = RequestMethod.GET)
-    public ResponseEntity<Loan> retrieveLoan(@PathVariable Long id) {
+    @RequestMapping(value = "/invest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void createInvestment(@RequestBody Investment investment) {
+        loanService.createInvestment(investment);
+    }
+
+    @RequestMapping(value = "/retrieve/{id}", method = RequestMethod.GET)
+    public ResponseEntity<InvestedLoan> retrieveLoan(@PathVariable Long id) {
         return new ResponseEntity<>(loanService.retrieveFor(id), OK);
     }
 }

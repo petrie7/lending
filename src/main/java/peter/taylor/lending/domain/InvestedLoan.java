@@ -2,48 +2,40 @@ package peter.taylor.lending.domain;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import peter.taylor.lending.serialization.LoanDeserializer;
-import peter.taylor.lending.serialization.LoanSerializer;
-
-import javax.persistence.*;
+import peter.taylor.lending.serialization.InvestedLoanDeserializer;
+import peter.taylor.lending.serialization.InvestedLoanSerializer;
 
 import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
 import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCode;
 import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
 
-@Entity
-@JsonSerialize(using = LoanSerializer.class)
-@JsonDeserialize(using = LoanDeserializer.class)
-public class Loan {
+@JsonSerialize(using = InvestedLoanSerializer.class)
+@JsonDeserialize(using = InvestedLoanDeserializer.class)
+public class InvestedLoan {
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-
-    @Column(name = "borrower")
     private String borrower;
+    private Double loanAmount;
+    private Double investmentAmount;
 
-    @Column(name = "amount")
-    private Double amount;
-
-    public Loan() {
+    public InvestedLoan() {
     }
 
-    public Loan(String borrower, Double amount) {
+    public InvestedLoan(String borrower, Double loanAmount, Double investmentAmount) {
         this.borrower = borrower;
-        this.amount = amount;
-    }
-
-    public Long id() {
-        return id;
+        this.loanAmount = loanAmount;
+        this.investmentAmount = investmentAmount;
     }
 
     public String borrower() {
         return borrower;
     }
 
-    public Double amount() {
-        return amount;
+    public Double loanAmount() {
+        return loanAmount;
+    }
+
+    public Double investmentAmount() {
+        return investmentAmount;
     }
 
     @Override
