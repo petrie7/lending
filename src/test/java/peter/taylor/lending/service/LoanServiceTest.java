@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import peter.taylor.lending.InvestedLoanFactory;
+import peter.taylor.lending.NoLoanExistsException;
 import peter.taylor.lending.domain.Loan;
 import peter.taylor.lending.repositories.InvestmentRepository;
 import peter.taylor.lending.repositories.LoanRepository;
@@ -13,8 +14,7 @@ import peter.taylor.lending.repositories.LoanRepository;
 import static java.util.Collections.emptyList;
 import static java.util.Optional.of;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class LoanServiceTest {
@@ -57,6 +57,15 @@ public class LoanServiceTest {
         verify(loanRepository).findById(loanId);
         verify(investmentRepository).findByLoanId(loanId);
         verify(investedLoanFactory).from(loan, emptyList());
+    }
+
+    @Test(expected = NoLoanExistsException.class)
+    public void throwsWhenNoLoanExists() {
+        when(loanRepository.findById(loanId)).thenThrow(new NoLoanExistsException(loanId));
+
+        loanService.retrieveFor(loanId);
+        verify(investmentRepository, never()).findByLoanId(any());
+        verify(investedLoanFactory, never()).from(any(), any());
     }
 
 }

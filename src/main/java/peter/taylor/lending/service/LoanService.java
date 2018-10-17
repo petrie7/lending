@@ -3,11 +3,14 @@ package peter.taylor.lending.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import peter.taylor.lending.InvestedLoanFactory;
+import peter.taylor.lending.NoLoanExistsException;
 import peter.taylor.lending.domain.InvestedLoan;
 import peter.taylor.lending.domain.Investment;
 import peter.taylor.lending.domain.Loan;
 import peter.taylor.lending.repositories.InvestmentRepository;
 import peter.taylor.lending.repositories.LoanRepository;
+
+import java.util.Optional;
 
 @Service
 public class LoanService {
@@ -28,10 +31,20 @@ public class LoanService {
     }
 
     public InvestedLoan retrieveFor(Long id) {
-        return investedLoanFactory.from(
-                loanRepository.findById(id).get(),
-                investmentRepository.findByLoanId(id)
-        );
+        Optional<Loan> loan = loanRepository.findById(id);
+
+        if (loan.isPresent()) {
+            return investedLoanFactory.from(
+                    loan.get(),
+                    investmentRepository.findByLoanId(id)
+            );
+        } else {
+            throw new NoLoanExistsException(id);
+        }
+    }
+
+    public void delete(Long loanId) {
+        loanRepository.deleteById(loanId);
     }
 
     public void createInvestment(Investment investment) {

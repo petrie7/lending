@@ -9,6 +9,7 @@ import peter.taylor.lending.domain.Investment;
 import peter.taylor.lending.domain.Loan;
 import peter.taylor.lending.service.LoanService;
 
+import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -33,6 +34,17 @@ public class LoanController {
 
     @RequestMapping(value = "/retrieve/{id}", method = RequestMethod.GET)
     public ResponseEntity<InvestedLoan> retrieveLoan(@PathVariable Long id) {
-        return new ResponseEntity<>(loanService.retrieveFor(id), OK);
+        try {
+            InvestedLoan investedLoan = loanService.retrieveFor(id);
+            return new ResponseEntity<>(investedLoan, OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(NOT_FOUND);
+        }
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteLoan(@PathVariable Long id) {
+        loanService.delete(id);
+        return new ResponseEntity<>(OK);
     }
 }
