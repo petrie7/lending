@@ -9,7 +9,6 @@ import java.io.IOException;
 
 public class LoanSerializer extends JsonSerializer<Loan> {
 
-    //TODO is this needed???
     @Override
     public void serialize(Loan loan, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
