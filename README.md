@@ -27,6 +27,8 @@
  "borrower" : "Borrower",
  "amount" : 50.0
 }
+
+**Response** {loanId}
                            
 ---
 
@@ -35,6 +37,14 @@
 **HTTP request method:** GET
 
 **URL:** http://localhost:8080/retrieve/{loanId}
+
+**Response:** 
+
+{
+ "borrower": "Borrower",
+ "loanAmount": 50,
+ "investmentAmount": 10
+}
                            
 ---
 
@@ -61,4 +71,9 @@
 }
                            
 ***
+
+### Features to be implemented
+* A service to return interest owed to a given lender for 1 months interest
+* Investments can have a given start and end date
+* A service that returns the interest for a given investment over the period of its lifetime
 
