@@ -73,6 +73,7 @@
 ***
 
 ### Features to be implemented
+* Validation on whether an investment can be made
 * A service to return interest owed to a given lender for 1 months interest
 * Investments can have a given start and end date
 * A service that returns the interest for a given investment over the period of its lifetime
