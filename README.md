@@ -1,5 +1,5 @@
 # lending
--
+---
 ### Features:
 
 * Create a loan
@@ -28,7 +28,7 @@
  "amount" : 50.0
 }
                            
--
+---
 
 * Get a loan and the amount invested
 
@@ -36,7 +36,7 @@
 
 **URL:** http://localhost:8080/retrieve/{loanId}
                            
--
+---
 
 * Delete a loan
 
@@ -44,7 +44,7 @@
 
 **URL:** http://localhost:8080/delete/{loanId}
                            
--
+---
 
 * Create an investment in a loan
 
@@ -60,5 +60,5 @@
  "amount" : 50.0
 }
                            
--
+***
 
