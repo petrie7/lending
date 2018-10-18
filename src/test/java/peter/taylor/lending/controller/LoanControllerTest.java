@@ -8,10 +8,12 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import peter.taylor.lending.NoLoanExistsException;
 import peter.taylor.lending.domain.InvestedLoan;
+import peter.taylor.lending.domain.Investment;
 import peter.taylor.lending.domain.Loan;
 import peter.taylor.lending.service.LoanService;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -23,25 +25,41 @@ public class LoanControllerTest {
     private LoanService loanService;
 
     private LoanController loanController;
+    private Long loanId;
+
 
     @Before
     public void setUp() {
         loanController = new LoanController(loanService);
+        loanId = 1L;
     }
 
     @Test
     public void handlesRequestToCreateALoan() {
         Loan loan = new Loan("Borrower", 10.0);
 
-        loanController.createLoan(loan);
+        ResponseEntity<Long> response = loanController.createLoan(loan);
 
+        assertThat(response.getStatusCodeValue(), is(200));
+        assertThat(response.getBody(), is(notNullValue()));
         verify(loanService).createLoan(loan);
     }
 
     @Test
-    public void handlesRequestToRetrieveALoan() {
-        Long loanId = 1L;
+    public void handlesRequestToInvestInALoan() {
+        Investment investment = new Investment(
+                loanId,
+                "Lender",
+                10.0
+        );
+        ResponseEntity<String> response = loanController.createInvestment(investment);
 
+        assertThat(response.getStatusCodeValue(), is(200));
+        verify(loanService).createInvestment(investment);
+    }
+
+    @Test
+    public void handlesRequestToRetrieveALoan() {
         ResponseEntity<InvestedLoan> responseEntity = loanController.retrieveLoan(loanId);
 
         assertThat(responseEntity.getStatusCodeValue(), is(200));
@@ -49,8 +67,15 @@ public class LoanControllerTest {
     }
 
     @Test
+    public void handlesRequestToDeleteALoan() {
+        ResponseEntity<String> response = loanController.deleteLoan(loanId);
+
+        assertThat(response.getStatusCodeValue(), is(200));
+        verify(loanService).delete(loanId);
+    }
+
+    @Test
     public void handlesRequestToRetrieveALoanThatDoesNotExist() {
-        Long loanId = 1L;
         when(loanService.retrieveFor(loanId)).thenThrow(new NoLoanExistsException(loanId));
 
         ResponseEntity<InvestedLoan> responseEntity = loanController.retrieveLoan(loanId);

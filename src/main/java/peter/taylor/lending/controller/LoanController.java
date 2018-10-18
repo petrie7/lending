@@ -28,8 +28,9 @@ public class LoanController {
     }
 
     @RequestMapping(value = "/invest", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createInvestment(@RequestBody Investment investment) {
+    public ResponseEntity<String> createInvestment(@RequestBody Investment investment) {
         loanService.createInvestment(investment);
+        return new ResponseEntity<>(OK);
     }
 
     @RequestMapping(value = "/retrieve/{id}", method = RequestMethod.GET)

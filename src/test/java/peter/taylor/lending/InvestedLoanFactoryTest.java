@@ -2,8 +2,8 @@ package peter.taylor.lending;
 
 import org.junit.Test;
 import peter.taylor.lending.domain.InvestedLoan;
-import peter.taylor.lending.domain.Investment;
-import peter.taylor.lending.domain.Loan;
+import peter.taylor.lending.dao.InvestmentDao;
+import peter.taylor.lending.dao.LoanDao;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
@@ -15,9 +15,9 @@ public class InvestedLoanFactoryTest {
     public void createsInvestedLoanFromLoanAndItsInvestments() {
         InvestedLoanFactory investedLoanFactory = new InvestedLoanFactory();
 
-        Loan loan = new Loan("Borrower", 20.0);
-        Investment firstInvestment = new Investment(1L, "Lender", 10.0);
-        Investment secondInvestment = new Investment(1L, "Second Lender", 5.0);
+        LoanDao loan = new LoanDao("Borrower", 20.0);
+        InvestmentDao firstInvestment = new InvestmentDao(1L, "Lender", 10.0);
+        InvestmentDao secondInvestment = new InvestmentDao(1L, "Second Lender", 5.0);
 
         InvestedLoan investedLoan = investedLoanFactory.from(loan, asList(firstInvestment, secondInvestment));
 

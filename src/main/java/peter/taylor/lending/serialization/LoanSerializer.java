@@ -8,10 +8,11 @@ import peter.taylor.lending.domain.Loan;
 import java.io.IOException;
 
 public class LoanSerializer extends JsonSerializer<Loan> {
+
+    //TODO is this needed???
     @Override
     public void serialize(Loan loan, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
         jsonGenerator.writeStartObject();
-        jsonGenerator.writeNumberField("id", loan.id());
         jsonGenerator.writeStringField("borrower", loan.borrower());
         jsonGenerator.writeNumberField("amount", loan.amount());
         jsonGenerator.writeEndObject();

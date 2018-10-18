@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import peter.taylor.lending.InvestedLoanFactory;
 import peter.taylor.lending.NoLoanExistsException;
-import peter.taylor.lending.domain.InvestedLoan;
-import peter.taylor.lending.domain.Investment;
-import peter.taylor.lending.domain.Loan;
+import peter.taylor.lending.dao.InvestmentDao;
+import peter.taylor.lending.dao.LoanDao;
+import peter.taylor.lending.domain.*;
 import peter.taylor.lending.repositories.InvestmentRepository;
 import peter.taylor.lending.repositories.LoanRepository;
 
@@ -27,11 +27,11 @@ public class LoanService {
     }
 
     public Long createLoan(Loan loan) {
-        return loanRepository.save(loan).id();
+        return loanRepository.save(new LoanDao(loan.borrower(), loan.amount())).id();
     }
 
     public InvestedLoan retrieveFor(Long id) {
-        Optional<Loan> loan = loanRepository.findById(id);
+        Optional<LoanDao> loan = loanRepository.findById(id);
 
         if (loan.isPresent()) {
             return investedLoanFactory.from(
@@ -48,6 +48,12 @@ public class LoanService {
     }
 
     public void createInvestment(Investment investment) {
-        investmentRepository.save(investment);
+        investmentRepository.save(
+                new InvestmentDao(
+                        investment.loanId(),
+                        investment.lender(),
+                        investment.amount()
+                )
+        );
     }
 }

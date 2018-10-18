@@ -1,34 +1,38 @@
-package peter.taylor.lending.domain;
+package peter.taylor.lending.dao;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import peter.taylor.lending.serialization.InvestmentDeserializer;
+import javax.persistence.*;
 
 import static org.apache.commons.lang3.builder.EqualsBuilder.reflectionEquals;
 import static org.apache.commons.lang3.builder.HashCodeBuilder.reflectionHashCode;
 import static org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString;
 
-@JsonDeserialize(using = InvestmentDeserializer.class)
-public class Investment {
+@Entity
+public class LoanDao {
 
-    private Long loanId;
-    private String lender;
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+
+    @Column(name = "borrower")
+    private String borrower;
+
+    @Column(name = "amount")
     private Double amount;
 
-    public Investment() {
+    public LoanDao() {
     }
 
-    public Investment(Long loanId, String lender, Double amount) {
-        this.loanId = loanId;
-        this.lender = lender;
+    public LoanDao(String borrower, Double amount) {
+        this.borrower = borrower;
         this.amount = amount;
     }
 
-    public Long loanId() {
-        return loanId;
+    public Long id() {
+        return id;
     }
 
-    public String lender() {
-        return lender;
+    public String borrower() {
+        return borrower;
     }
 
     public Double amount() {
